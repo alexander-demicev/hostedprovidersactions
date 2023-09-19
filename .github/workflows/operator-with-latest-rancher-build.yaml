@@ -38,7 +38,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-            fetch-depth: 0
+          fetch-depth: 0
+          repository: rancher/${{ inputs.operator_name }}
+          ref: master
+          path: ${{ inputs.operator_name }}
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2.10.0
@@ -52,7 +55,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           target: ${{ inputs.operator_name }}
-          file: test/e2e/Dockerfile.e2e
+          file:  ${{ inputs.operator_name }}/test/e2e/Dockerfile.e2e
           build-args: |
             TAG=${{ env.TAG }}
             REPO=${{ env.OPERATOR_IMAGE_REPO_BASE }}-${{ env.BUILD_DATE }}
